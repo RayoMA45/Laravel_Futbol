@@ -10,6 +10,8 @@ class EquipoController extends Controller
     public function index()
     {
         return Equipo::with('estadio')->get();
+        // return Equipo:all();
+        // regresa todos los estadios y con with con su estadio
     }
  
     /**

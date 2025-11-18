@@ -9,7 +9,7 @@ class JugadorController extends Controller
 {
     public function index()
     {
-        return Jugador::with('jugador')->get();
+        return Jugador::with('equipo')->get();
     }
 
     /**
@@ -22,15 +22,21 @@ class JugadorController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'fecha_nacimiento' => 'required|date',
+            'posicion' => 'required|string|max:50',
+            'equipo_id' => 'required|exists:equipos,id'
+        ]);
+
+        $jugador = Jugador::create($request->all());
+
+        return response()->json($jugador, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        return Jugador::with('equipo')->findOrFail($id);
     }
 
     /**
@@ -41,19 +47,26 @@ class JugadorController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'sometimes|string|max:255',
+            'fecha_nacimiento' => 'sometimes|date',
+            'posicion' => 'sometimes|string|max:50',
+            'equipo_id' => 'sometimes|exists:equipos,id'
+        ]);
+
+        $jugador = Jugador::findOrFail($id);
+        $jugador->update($request->all());
+
+        return response()->json($jugador, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $jugador = Jugador::findOrFail($id);
+        $jugador->delete();
+
+        return response()->json(null, 204);
     }
 }
