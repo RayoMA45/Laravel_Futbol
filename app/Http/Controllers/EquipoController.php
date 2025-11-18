@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Equipo;
 
 class EquipoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Equipo::with('estadio')->get();
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      */
@@ -22,20 +20,23 @@ class EquipoController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255',
+            'titulos' => 'required|integer',
+            'estadio_id' => 'required|exists:estadios,id', // valida que exista
+        ]);
+
+        $equipo = Equipo::create($request->all());
+
+        return response()->json($equipo, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        return Equipo::with('estadio')->findOrFail($id);
     }
 
     /**
@@ -46,19 +47,26 @@ class EquipoController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'sometimes|string|max:255',
+            'ciudad' => 'sometimes|string|max:255',
+            'titulos' => 'sometimes|integer',
+            'estadio_id' => 'sometimes|exists:estadios,id',
+        ]);
+
+        $equipo = Equipo::findOrFail($id);
+        $equipo->update($request->all());
+
+        return response()->json($equipo, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $equipo = Equipo::findOrFail($id);
+        $equipo->delete();
+
+        return response()->json(null, 204);
     }
 }
