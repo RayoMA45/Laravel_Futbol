@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Temporada;
 
 class TemporadasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Temporada::all();
     }
 
     /**
@@ -22,20 +20,20 @@ class TemporadasController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request -> validate([
+            'nombre'=> 'required|string',
+            'fecha_inico' => 'required|date',
+            'fecha_fin' => 'required|date'
+        ]);
+
+        return Temporada::created($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        return Temporada::findOrFail($id);
     }
 
     /**
@@ -46,19 +44,26 @@ class TemporadasController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $temporada = Temporada::findOrFail($id);
+
+        $request->validate([
+            'nombre'=> 'string',
+            'fecha_inicio'=> 'date',
+            'fecha_fin'=> 'date'
+        ]);
+
+        $temporada->update($request->all());
+        return $temporada;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $temporada = Temporada::findOrFail($id);
+        $temporada->delete();
+        return response()->json([
+            "message"=> "Temporada eliminada correctamente"
+        ]);
     }
 }
