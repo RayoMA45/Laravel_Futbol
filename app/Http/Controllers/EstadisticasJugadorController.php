@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Estadisticas_Jugador;
 
 class EstadisticasJugadorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Estadisticas_Jugador::with(['jugador', 'partido_jugado'])->get();
     }
 
     /**
@@ -22,20 +20,24 @@ class EstadisticasJugadorController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'goles'=>'required|integer',
+            'asistencias'=>'required|integer',
+            'tarjetas_amarillas'=>'required|integer',
+            'tarjetas_rojas'=>'required|integer',
+            'min_jugados'=>'required|integer',
+            'jugador_id'=>'required|exists:jugador,id',
+            'partido_jugado_id'=>'required|exists:partido_jugado,id'
+        ]);
+        $estadistica = Estadisticas_Jugador::created($request->all());
+        return response()->json($estadistica,201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        return Estadisticas_Jugador::with(['jugador', 'partido_jugado'])->findOrFail($id);
     }
 
     /**
@@ -46,19 +48,26 @@ class EstadisticasJugadorController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'goles'=>'required|integer',
+            'asistencias'=>'required|integer',
+            'tarjetas_amarillas'=>'required|integer',
+            'tarjetas_rojas'=>'required|integer',
+            'min_jugados'=>'required|integer',
+            'jugador_id'=>'required|exists:jugador,id',
+            'partido_jugado_id'=>'required|exists:partido_jugado,id'
+        ]);
+        $estadistica_jugador = Estadisticas_Jugador::findOrFail($id);
+        $estadistica_jugador->update($request->all());
+        return response()->json($estadistica_jugador, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $estadistica_jugador = Estadisticas_Jugador::findOrFail($id);
+        $estadistica_jugador->delete();
+        return response()->json(null,204);
     }
 }

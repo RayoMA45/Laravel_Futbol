@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Partido_Jugado;
 
 class PartidoJugadoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Partido_Jugado::with(['equipo', 'estadios', 'temporadas', 'arbitros'])->get();
     }
 
     /**
@@ -22,20 +20,28 @@ class PartidoJugadoController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'goles_local'=>'required|integer',
+            'goles_visitante'=>'required|integer',
+            'local'=>'required|integer',
+            'visitante'=>'required|integer',
+            'fecha'=>'required|date',
+            'equipo_id'=>'required|exists:equipos,id',
+            'temporada_id'=>'required|exists:temporadas,id',
+            'estadio_id'=>'required|exists:estadios,id',
+            'arbitro_id'=>'required|exists:arbitros,id'
+        ]);
+
+        $partido_jugado = Partido_Jugado::created($request->all());
+
+        return response()->json($partido_jugado,201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        return Partido_Jugado::with(['equipo', 'temporada', 'estadio', 'arbitro'])->findOrFail($id);
     }
 
     /**
@@ -46,19 +52,28 @@ class PartidoJugadoController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'goles_local'=>'required|integer',
+            'goles_visitante'=>'required|integer',
+            'local'=>'required|integer',
+            'visitante'=>'required|integer',
+            'fecha'=>'required|date',
+            'equipo_id'=>'required|exists:equipos,id',
+            'temporada_id'=>'required|exists:temporadas,id',
+            'estadio_id'=>'required|exists:estadios,id',
+            'arbitro_id'=>'required|exists:arbitros,id'
+        ]);
+        $partido_jugado = Partido_Jugado::findOrFail($id);
+        $partido_jugado->update($request->all());
+        return response()->json($partido_jugado, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $partido_jugado = Partido_Jugado::findOrFail($id);
+        $partido_jugado->delete();
+        return response()->json(null,204);
     }
 }
