@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Estadisticas_Jugador extends Model
 {
     use HasFactory; 
+    protected $table = 'estadisticas_jugadores';
     protected $fillable = [
         'goles',
         'asistencias',
