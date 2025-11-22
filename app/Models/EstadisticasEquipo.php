@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Estadisticas_Equipo extends Model
+class EstadisticasEquipo extends Model
 {
     use HasFactory;
+    protected $table = 'estadisticas_equipos';
     protected $fillable = [
         'partidos_ganados',
         'partidos_empatados',
         'partidos_perdidos',
-        'gol_favor',
-        'gol_contra',
+        'goles_favor',
+        'goles_contra',
         'puntos',
         'equipo_id',
         'temporada_id'

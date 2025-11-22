@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Estadisticas_Equipo;
-use App\Models\Estadisticas_Jugador;
+use App\Models\EstadisticasEquipo;
 
 class EstadisticasEquipoController extends Controller
 {
     public function index()
     {
-        return Estadisticas_Jugador::with(['equipo', 'temporada'])->get();
+        return EstadisticasEquipo::with(['equipo', 'temporada'])->get();
     }
 
     /**
@@ -27,14 +26,14 @@ class EstadisticasEquipoController extends Controller
             'partidos_ganados'=>'required|integer',
             'partidos_perdidos'=>'required|integer',
             'partidos_empatados'=>'required|integer',
-            'gol_favor'=>'required|integer',
-            'gol_contra'=>'required|integer',
+            'goles_favor'=>'required|integer',
+            'goles_contra'=>'required|integer',
             'puntos'=>'required|integer',
             'equipo_id'=>'required|exists:equipos,id',
             'temporada_id'=>'required|exists:temporadas,id'
         ]);
 
-        $estadistica = Estadisticas_Equipo::created($request->all());
+        $estadistica = EstadisticasEquipo::create($request->all());
 
         return response()->json($estadistica,201);
     }
@@ -42,7 +41,7 @@ class EstadisticasEquipoController extends Controller
 
     public function show($id)
     {
-        return Estadisticas_Equipo::with(['equipo', 'temporada'])->findOrFail($id);
+        return EstadisticasEquipo::with(['equipo', 'temporada'])->findOrFail($id);
     }
 
     /**
@@ -59,14 +58,14 @@ class EstadisticasEquipoController extends Controller
             'partidos_ganados'=>'required|integer',
             'partidos_perdidos'=>'required|integer',
             'partidos_empatados'=>'required|integer',
-            'gol_favor'=>'required|integer',
-            'gol_contra'=>'required|integer',
+            'goles_favor'=>'required|integer',
+            'goles_contra'=>'required|integer',
             'puntos'=>'required|integer',
             'equipo_id'=>'required|exists:equipos,id',
             'temporada_id'=>'required|exists:temporadas,id'
         ]);
 
-        $estadistica_equipo = Estadisticas_Equipo::findOrFail($id);
+        $estadistica_equipo = EstadisticasEquipo::findOrFail($id);
         $estadistica_equipo->update($request->all());
 
         return response()->json($estadistica_equipo, 200);
@@ -74,7 +73,7 @@ class EstadisticasEquipoController extends Controller
 
     public function destroy($id)
     {
-        $estadistica_equipo = Estadisticas_Equipo::findOrFail($id);
+        $estadistica_equipo = EstadisticasEquipo::findOrFail($id);
         $estadistica_equipo->delete();
         
         return response()->json(null,204);

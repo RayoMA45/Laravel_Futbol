@@ -27,7 +27,7 @@ class ArbitrosController extends Controller
             'nacionalidad'=>'required|string|max:100'
         ]);
 
-        $arbitro = Arbitro::created($request->all());
+        $arbitro = Arbitro::create($request->all());
         return response()->json($arbitro, 201);
     }
 

@@ -24,11 +24,11 @@ class TemporadasController extends Controller
     {
         $request -> validate([
             'nombre'=> 'required|string',
-            'fecha_inico' => 'required|date',
+            'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date'
         ]);
 
-        return Temporada::created($request->all());
+        return Temporada::create($request->all());
     }
 
     public function show(string $id)
@@ -49,9 +49,9 @@ class TemporadasController extends Controller
         $temporada = Temporada::findOrFail($id);
 
         $request->validate([
-            'nombre'=> 'string',
-            'fecha_inicio'=> 'date',
-            'fecha_fin'=> 'date'
+            'nombre'=> 'required|string',
+            'fecha_inicio'=> 'required|date',
+            'fecha_fin'=> 'required|date'
         ]);
 
         $temporada->update($request->all());
