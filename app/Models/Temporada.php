@@ -18,11 +18,11 @@ class Temporada extends Model
 
     public function estadisticas_equipos()
     {
-        return $this->hasMany(Estadisticas_Equipo::class);
+        return $this->hasMany(EstadisticasEquipo::class);
     }
 
     public function partido_jugado()
     {
-        return $this->hasMany(Partido_Jugado::class);
+        return $this->hasMany(PartidoJugado::class);
     }
 }

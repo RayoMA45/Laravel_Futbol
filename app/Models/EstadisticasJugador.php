@@ -14,20 +14,21 @@ class EstadisticasJugador extends Model
         'asistencias',
         'tarjetas_rojas',
         'tarjetas_amarillas',
-        'min_jugados',
+        'minutos_jugados',
         'partido_jugado_id',
         'jugador_id'
     ];
 
     public $timestamps = true;
 
-    public function jugadores()
+    public function jugador()
     {
         return $this->belongsTo(Jugador::class);
     }
 
     public function partido_jugado()
     {
-        return $this->belongsTo(Partido_Jugado::class);
+        return $this->belongsTo(PartidoJugado::class);
     }
+
 }

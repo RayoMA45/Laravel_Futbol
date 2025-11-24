@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Partido_Jugado extends Model
+class PartidoJugado extends Model
 {
     use HasFactory;
+    protected $table = 'partidosjugados';
     protected $fillable = [
         'goles_local',
         'goles_visitante',
@@ -16,15 +17,14 @@ class Partido_Jugado extends Model
         'fecha',
         'arbitro_id',
         'temporada_id',
-        'estadio_id',
-        'equipos_id'
+        'estadio_id'
     ];
 
     public $timestamps = true;
 
     public function estadisticas_jugadores()
     {
-        return $this->hasMany(Estadisticas_Jugador::class);
+        return $this->hasMany(EstadisticasJugador::class);
     }
 
     public function arbitros()
@@ -40,10 +40,5 @@ class Partido_Jugado extends Model
     public function estadios()
     {
         return $this->belongsTo(Estadio::class);
-    }
-
-    public function equipos()
-    {
-        return $this->belongsTo(Equipo::class);
     }
 }

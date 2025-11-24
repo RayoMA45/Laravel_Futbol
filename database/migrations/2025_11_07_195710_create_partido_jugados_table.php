@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('partido_jugados', function (Blueprint $table) {
+        Schema::create('partidosjugados', function (Blueprint $table) {
             $table->id();
             $table->integer('goles_local');
             $table->integer('goles_visitante');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('partido_jugados');
+        Schema::dropIfExists('partidosjugados');
     }
 };

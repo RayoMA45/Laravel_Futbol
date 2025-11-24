@@ -23,6 +23,6 @@ class Estadio extends Model
 
     public function partido_jugado()
     {
-        return $this->hasMany(Partido_Jugado::class);
+        return $this->hasMany(PartidoJugado::class);
     }
 }

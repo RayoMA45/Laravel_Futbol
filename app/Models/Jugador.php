@@ -25,6 +25,6 @@ class Jugador extends Model
 
     public function estadistica_jugadores()
     {
-        return $this->belongsTo(Estadisticas_Jugador::class);
+        return $this->belongsTo(EstadisticasJugador::class);
     }
 }

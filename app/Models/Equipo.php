@@ -25,14 +25,9 @@ class Equipo extends Model
 
     public function estadisticas_equipo()
     {
-        return $this->hasMany(Estadisticas_Equipo::class);
+        return $this->hasMany(EstadisticasEquipo::class);
     }
 
-    public function partido_jugado()
-    {
-        return $this->hasMany(Partido_Jugado::class);
-    }
-    
     public function estadio()
     {
         return $this->belongsTo(Estadio::class);
